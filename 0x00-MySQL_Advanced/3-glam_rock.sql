@@ -11,5 +11,5 @@ SELECT `band_name`,
                 ELSE 2022 - formed + 1
         END AS lifespan
 FROM metal_bands
-WHERE style = 'Glam rock'
+WHERE FIND_IN_SET('Glam rock', IFNULL(style, "")) > 0
 ORDER BY lifespan DESC;
