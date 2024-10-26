@@ -10,11 +10,11 @@ from functools import wraps
 
 def count_calls(method: Callable) -> Callable:
     """
-        This is a decorator that is used to store how amny times a
+        This is a decorator that is used to store how many times a
         method in the Cache has been called
 
         Arguments:
-            fn: the Callable function
+            method: the Callable function
 
         Return: returns a callable function
     """
@@ -24,6 +24,27 @@ def count_calls(method: Callable) -> Callable:
         self._redis.incr(name, 1)
         return method(self, *arg)
     return count
+
+
+def call_history(method: Callable) -> Callable:
+    """
+        This is a decorator that is used to store the history of input
+        and outputs
+
+        Arguments:
+            method: The Callable function
+
+        Return: returns the output of method
+    """
+    @wraps(method)
+    def history(self, *args) -> None:
+        input_arg = f"{method.__qualname__}:inputs"
+        output_arg = f"{method.__qualname__}:outputs"
+        self._redis.rpush(input_arg, str(args))
+        output = method(self, *args)
+        self._redis.rpush(output_arg, output)
+        return output
+    return history
 
 
 class Cache:
@@ -41,6 +62,7 @@ class Cache:
         self._redis.flushdb(True)
 
     @count_calls
+    @call_history
     def store(self, data: Union[str, bytes, int, float]) -> str:
         """
             This method takes an argument and returns a string
