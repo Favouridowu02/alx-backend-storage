@@ -4,6 +4,7 @@
 """
 import redis
 from uuid import uuid4
+from typing import Union
 
 
 class Cache:
@@ -13,14 +14,14 @@ class Cache:
         Methods:
             store: this method is used to store data
     """
-    def __init__(self):
+    def __init__(self) -> None:
         """
             This is the initialization of the class
         """
         self._redis = redis.Redis()
-        self._redis.flushdb()
+        self._redis.flushdb(True)
 
-    def store(self, data: str | bytes | int | float) -> str:
+    def store(self, data: Union[str, bytes, int, float]) -> str:
         """
             This method takes an argument and returns a string
 
