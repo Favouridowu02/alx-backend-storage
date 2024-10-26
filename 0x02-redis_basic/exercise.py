@@ -5,6 +5,25 @@
 import redis
 from uuid import uuid4
 from typing import Union, Callable
+from functools import wraps
+
+
+def count_calls(fn: Callable) -> Callable:
+    """
+        This is a decorator that is used to store how amny times a
+        method in the Cache has been called
+
+        Arguments:
+            fn: the Callable function
+
+        Return: returns a callable function
+    """
+    @wraps(fn)
+    def count(self, *arg) -> None:
+        fn(self, *arg)
+        name = fn.__qualname__
+        self._redis.incr(name, 1)
+    return count
 
 
 class Cache:
@@ -21,6 +40,7 @@ class Cache:
         self._redis = redis.Redis()
         self._redis.flushdb(True)
 
+    @count_calls
     def store(self, data: Union[str, bytes, int, float]) -> str:
         """
             This method takes an argument and returns a string
