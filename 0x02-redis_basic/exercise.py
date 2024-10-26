@@ -18,7 +18,7 @@ class Cache:
             This is the initialization of the class
         """
         self._redis = redis.Redis()
-        self._redis.flushdb
+        self._redis.flushdb()
 
     def store(self, data: str | bytes | int | float) -> str:
         """
