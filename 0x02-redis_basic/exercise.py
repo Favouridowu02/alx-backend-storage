@@ -8,7 +8,7 @@ from typing import Union, Callable
 from functools import wraps
 
 
-def count_calls(fn: Callable) -> Callable:
+def count_calls(method: Callable) -> Callable:
     """
         This is a decorator that is used to store how amny times a
         method in the Cache has been called
@@ -18,11 +18,11 @@ def count_calls(fn: Callable) -> Callable:
 
         Return: returns a callable function
     """
-    @wraps(fn)
+    @wraps(method)
     def count(self, *arg) -> None:
-        name = fn.__qualname__
+        name = method.__qualname__
         self._redis.incr(name, 1)
-        return fn(self, *arg)
+        return method(self, *arg)
     return count
 
 
