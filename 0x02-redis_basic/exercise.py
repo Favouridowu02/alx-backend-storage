@@ -20,9 +20,9 @@ def count_calls(fn: Callable) -> Callable:
     """
     @wraps(fn)
     def count(self, *arg) -> None:
-        fn(self, *arg)
         name = fn.__qualname__
         self._redis.incr(name, 1)
+        return fn(self, *arg)
     return count
 
 
