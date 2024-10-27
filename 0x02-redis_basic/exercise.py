@@ -110,7 +110,8 @@ class Cache:
 
     def get_str(self, key: str) -> str:
         """
-            This method is used to get a string representation of the
+            This method is used to get a string representation of
+            the
             data
 
             Argument:
@@ -122,10 +123,11 @@ class Cache:
 
     def get_int(self, key: str) -> int:
         """
-            This method is used to get an int representation of the               data
-
+            This method is used to get an int representation of true
+            data
             Argument:
                 key: this is the key to be used to access the value
-                                                                                    Return: returns an int representation of the value
+
+            Return: returns an int representation of the value
         """
         return self._redis.get(key, int)
