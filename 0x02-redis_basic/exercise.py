@@ -62,11 +62,11 @@ def replay(method):
     length = method.__self__._redis.llen(input_arg)
 
     name = method.__qualname__
-    print(f'{name} was called {length} times')
+    print(f'{name} was called {length} times:')
     for input_val, output_val in zip(inputs, outputs):
         input_val = input_val.decode('utf-8')
         output_val = output_val.decode('utf-8')
-        print(f'{name}{input_val} -> {output_val}')
+        print(f'{name}({input_val}) -> {output_val}')
 
 
 class Cache:
@@ -109,7 +109,23 @@ class Cache:
         return data
 
     def get_str(self, key: str) -> str:
+        """
+            This method is used to get a string representation of the
+            data
+
+            Argument:
+                key: this is the key to be used to access the value
+
+            Return: returns a string representation of the value
+        """
         return self._redis.get(key), lambda x: x.decode('utf-8')
 
     def get_int(self, key: str) -> int:
+        """
+            This method is used to get an int representation of the               data
+
+            Argument:
+                key: this is the key to be used to access the value
+                                                                                    Return: returns an int representation of the value
+        """
         return self._redis.get(key, int)
