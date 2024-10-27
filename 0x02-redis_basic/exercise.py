@@ -66,7 +66,7 @@ def replay(method):
     for input_val, output_val in zip(inputs, outputs):
         input_val = input_val.decode('utf-8')
         output_val = output_val.decode('utf-8')
-        print(f'{name}({input_val}) -> {output_val}')
+        print(f'{name}(*{input_val}) -> {output_val}')
 
 
 class Cache:
